@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1200, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Атлас РВЭ</title>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,500,700&display=swap" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./css/dropdown.css">
+    <link rel="stylesheet" href="./css/common.css">
+    <link rel="stylesheet" href="./css/normalize.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="./css/uikit-rtl.min.css" />
+    <script src="./js/appearence/uikit.min.js"></script>
+    <!-- <script src="./js/appearence/appearence.js"></script> -->
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <link rel="stylesheet" href="css/foopicker.css">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+
+</head>
+
+<body>
+    <!-- <div id="legendplace"></div> -->
+    <div class="wrapper">
+        <div class="wrapper__container">
+            <header class="header">
+                <article class="dropdowns">
+                    <div class="uk-inline">
+                        <button id="menu" class="uk-button uk-button-text" type="button">Layers</button>
+                        <div uk-dropdown="mode: click" style="position: absolute;">
+                            <ul id="dropdown-nav" class="uk-nav uk-dropdown-nav">
+                                <li class="uk-nav-header">Waves</li>
+                                <li class="uk-nav-divider"></li>
+                                <li id="hs" class="uk-active"><a href="#">Maximum significant wave height, m</a>
+                                </li>
+                                <li id="h3p"><a href="#">Maximum wave height (1% probability of exceedance), m</a></li>
+                                <li id="hsr"><a href="#">Mean significant wave height, m</a></li>
+                                <li id="emax"><a href="#">Maximum wave energy flux, kW/m</a></li>
+                                <li id="esr"><a href="#">Mean wave energy flux, kW/m</a></li>
+                                <li id="lsr"><a href="#">Mean wave length, m</a></li>
+                                <li id="psr"><a href="#">Mean wave period T01, s</a></li>
+                                <li id="osr"><a href="#">Probability of wave energy > 1 kW/m, %</a></li>
+                                <li class="uk-nav-header">Wind</li>
+                                <li class="uk-nav-divider"></li>
+                                <li id="wind_grp_50c"><a href="#">Mean  wind power density on 50 m above the ground, W/m2</a></li>
+                                <li id="wind_grp_100c"><a href="#">Mean wind power density on 100 m above the ground, W/m2</a></li>
+                                <li id="wind_spd_50c_year"><a href="#">Mean wind speed on 50 m above the ground, m/s</a></li>
+                                <li id="wind_spd_100c_year"><a href="#">Mean wind speed on 100 m above the ground, m/s</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="uk-inline">
+                        <button id="sea_menu" class="uk-button uk-button-text" type="button">Select sea</button>
+                        <div uk-dropdown="mode: click">
+                            <ul id="dropdown-seas" class="uk-nav uk-dropdown-nav">
+                                <li id="ArcticO" class="uk-nav-header"><a href="#">Arctic Ocean seas</a></li>
+                                <li class="uk-nav-divider"></li>                                
+                                <li id="WhiteS"><a href="#">White</a></li>
+                                <li id="BarentzS"><a href="#">Barents</a></li>
+                                <li id="KarskoeS"><a href="#">Kara</a></li>
+                                <li id="LaptevS"><a href="#">Laptev Sea</a></li>
+                                <li id="EastSibS"><a href="#">East Siberian Sea</a></li>                                                               
+                                <li id="ChukchiS"><a href="#">Chukchi Sea</a></li>
+                                <li id="PaсificO" class="uk-nav-header"><a href="#">Pacific Ocean seas</a></li>
+                                <li class="uk-nav-divider"></li>
+                                <li id="BeringS"><a href="#">Bering</a></li>
+                                <li id="OhotskS"><a href="#">Sea of Okhotsk</a></li>
+                                <li id="JapanS"><a href="#">Japanese</a></li>
+                                <li id="AtlanticO" class="uk-nav-header"><a href="#">Atlantic Ocean seas</a></li>
+                                <li class="uk-nav-divider"></li>
+                                <li id="AzovS"><a href="#">Azov</a></li>
+                                <li id="BalticS"><a href="#">Baltic</a></li>
+                                <li id="BlackS"><a href="#">Black</a></li>
+                                <li class="uk-nav-header">inland seas</li>
+                                <li class="uk-nav-divider"></li>
+                                <li id="KaspyS"><a href="#">Caspian</a></li>
+                                <li id="AllSeas" class="uk-nav-header"><a href="#">seas of the Russian Federation</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="name_legend">
+                    <div class="curchoice"></div>
+                    <div id="legendplace"></div>
+                </article>
+
+                <article class="global_control_butt">
+                   <!-- <button id="pquery" class="gcb">
+                        <i class="fa fa-mouse-pointer" aria-hidden="true" uk-tooltip="title:Инструмент выделения интересующей акватории; pos: bottom; offset: 4"></i>
+                    </button>-->
+                    <!-- <button id="timedatabut" class="gcb"> -->
+                        <!-- <i class="fa fa-flask" aria-hidden="true"></i> -->
+                        <!-- <i class="fa fa-sliders" aria-hidden="true"></i> -->
+                        <!-- <i class="fa fa-table" aria-hidden="true"></i> -->
+                        <!-- <i class="fa fa-area-chart" aria-hidden="true"></i> -->
+                        <!-- <i class="fa fa-calculator" aria-hidden="true" uk-tooltip="title:Data analysis tool. To get started, select a point in the water area. To close the tool, click the button again (for the Black Sea, 2016); pos: bottom; offset: 4"></i> -->
+                    <!-- </button> -->
+                    <!--<button id="clear_selection" class="gcb">-->
+                        <!-- <i class="fa fa-crosshairs" aria-hidden="true"></i> -->
+                        <!--<i class="fa fa-eraser" aria-hidden="true" uk-tooltip="title:Очистка пространственной выборки (недоступна)"></i> -->
+                    <!-- </button> -->
+                    <!-- <button id="project_info_butt" class="gcb">
+                        <i class="fa fa-info" aria-hidden="true" uk-tooltip="title:Project information"></i> -->
+                        <!-- <i class="fa fa-lightbulb-o" aria-hidden="true"></i> -->
+                    <!-- This is a button toggling the modal -->
+                    <a class="uk-button uk-button-default" href="#modal-full" uk-toggle>info</a>
+
+                    <div id="modal-full" class="uk-modal-full" uk-modal>
+                        <div class="uk-modal-dialog" uk-overflow-auto>
+                            <button class="uk-modal-close-full uk-close-large" type="button" uk-close></button>
+                            <div class="uk-grid-collapse uk-child-width-1-2@s uk-flex-middle" uk-grid>
+                                <div class="uk-background-cover" style="background-image: url('modal.png');" uk-height-viewport></div>
+                                <div class="uk-padding-large">
+                                    <h1>Project information</h1>
+                                    <p>
+                                        <div style="text-align: justify; text-indent: 20px;">
+                                            This Web-Atlas contains information in 13 Russian Seas, including the Azov, Black, Baltic, Caspian, White, Barents, Kara, Laptev, East Siberian, Chukchi, Bering Seas, the Sea of Okhotsk and the Sea of Japan/East Sea. The analysis of wave climate is based on the results of wave modelling by WAVEWATCH III with input NCEP/CFSR wind and ice data. The web atlas is based on the classic three-tier model, which includes a data storage subsystem (database server), a data analysis and publishing subsystem (GIS server), and a web-application subsystem that provides a user interface for interacting with data and map services (web server) (Myslenkov et al., 2018; Myslenkov et al., 2020)
+                                        </div>
+                                        <div style="text-align: justify; text-indent: 20px;">
+                                            Wind wave characteristics were calculated using the WW3 6.07 spectral wave model (Tolman, 2019). The WW3 model considers wind speed, ice concentration, physical effects described below. 
+                                        </div>
+                                        <div style="text-align: justify; text-indent: 20px;">
+                                            In this study, the calculations were made using ST6 scheme (Tolman, 2019). A discrete interaction approximation model was used for the possible nonlinear interactions of the waves. The approach of Battjes and Janssen (1978) was used for the wave height growth with the depth decrease in shallow water and for the related wave breaking with critical steepness value. The standard JONSWAP scheme was used for bottom friction. The model spectral resolution is 36 directions (10°), the frequency range includes 36 intervals from 0.03 to 0.843 Hz. The time step for the integration of the complete wave action equation is 15 min (Tolman, 2019). The influence of sea ice on the waves is calculated due to the ICE0 scheme.
+                                        </div>
+                                        <div style="text-align: justify; text-indent: 20px;">
+                                            We have used switch file with the following settings: F90 NOGRB NC4 SCRIP SCRIPNC DIST MPI PR3 UQ FLX4 LN1 ST6 NL1 BT1 DB1 MLIM TR0 BS0 IC0 IS0 REF0 XX0 WNT1 WNX1 RWND CRT1 CRX1 TRKNC O0 O1 O2 O4 O5 O6 O7. We use the same model settings and time step for the all studied seas.
+                                        </div>
+                                        <div style="text-align: justify; text-indent: 20px;">
+                                            More detailed description of the model configuration, the main results of the experiments with different meshes and computational schemes were presented in (Myslenkov et al., 2018b; Myslenkov et al.; 2019, Myslenkov et al., 2021b).
+                                        </div>
+                                        <div style="text-align: justify; text-indent: 20px;">
+                                            The input data of the wind speed at 10 m above the ground and the sea ice concentration were taken from the Climate Forecast System Reanalysis of the National Centers for Environmental Prediction (NCEP/CFSR) for the period from 1979 to 2010. This reanalysis has a spatial resolution 0.3°×0.3° and a time step of 1 hour (Saha et. al., 2010). Since 2011, we have been using NCEP/CFSv2 (Saha et al., 2014). It is the extension of the previous reanalysis version. It has a more detailed spatial resolution ~0.205°×0.204° and the same time step of one hour. 
+                                        </div>
+                                        <div style="text-align: justify; text-indent: 20px;">
+                                            Wave simulations have been performed using unstructured grids for all studied seas (Figure 1). The spatial resolution was 10−20 km in the central open areas of the seas and 700−1000 m in the coastal zones. The unstructured grid for the Barents and Kara Seas included the North Atlantic region. North Pacific was included for the Far East Seas (Figure 1). This unstructured mesh allows to get a high spatial resolution not only in coastal zones, but in the narrow straits too. Wave energy can freely pass from the Pacific Ocean through the straits of the Kuril chain and Aleutian Islands when an unstructured mesh is used. The computational grids were created on the basis of the General Bathymetric Chart of the Oceans (GEBCO), which has a spatial resolution of ~1.85 km for deep sea. The bathymetry data used were updated for coastal zones by digitized navigation maps with spatial resolution 200−300 m.
+                                        </div> 
+                                                               
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </header>
+
+            <section id="map"></section>
+            <section class="addinfo">
+
+
+                <div class="graphics">
+                    <article class="rose-graphic">
+                        <div id="rose-graphic"></div>
+                        <div class="control_butt">
+                            <i class="fa fa-window-minimize" uk-tooltip="title:Collapse; pos: right; offset: 4"></i>
+                            <i class="fa fa-info graph-info"
+                                uk-tooltip="title:Rose diagram of frequency of wind directions; pos: right; offset: 4"></i>
+                        </div>
+                        <div class="rose-title">Wind direction</div>
+                    </article>
+
+                    <article class="freq-graphic">
+                        <div id="freq-graphic"></div>
+                        <div class="control_butt">
+                            <i class="fa fa-window-minimize" uk-tooltip="title:Cfollapse; pos: right; offset: 4"></i>
+                            <i class="fa fa-info graph-info"
+                                uk-tooltip="title:Histogram of wind speeds frequency, m/s; pos: right; offset: 4"></i>
+                      
+                            <div class="tb-row">
+                                <div class="tb-toggle-button-cover">
+                                    <div class="tb-button-cover">
+                                        <div class="tb-button b2" id="tb-button-10">
+                                            <input type="checkbox" class="tb-checkbox" name="freq-height" >
+                                            <div class="tb-knobs">
+                                                <span>50 m</span>
+                                            </div>
+                                            <div class="tb-layer"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                           
+                            </div>
+                        </div>
+                        <div class="freq-title">Repeatability of wind speeds, [% - m/s]</div>
+                    </article>
+                 </div>
+
+
+                <article class="ww-table" style="font-size: 13px;">
+                    <div class="control_butt">
+                        <i class="fa fa-window-minimize" uk-tooltip="title:Collapse table; pos: right; offset: 4"></i>
+                    </div>
+                    <table class="uk-table uk-table-responsive">
+                        <caption id="sea_name" style="color:black; margin-top: 3px; padding-right: 5px;">
+                        </caption>
+                        <caption style="padding-right: 5px;">Wave parameters</caption>
+                        <tbody>
+                            <tr>
+                                <td>Height, m</td>
+                                <td id="wave_height" style="color:black; font-weight: bold;"></td>
+                            </tr>
+                            <tr>
+                                <td>Length, m</td>
+                                <td id="wave_lenght" style="color:black; font-weight: bold;"></td>
+                            </tr>
+                            <tr>
+                                <td>Period, s</td>
+                                <td id="wave_period" style="color:black; font-weight: bold;"></td>
+                            </tr>
+                            <tr>
+                                <td>Energy flux, kW/m</td>
+                                <td id="wave_energy" style="color:black; font-weight: bold;"></td>
+                            </tr>
+                            <tr>
+                                <td>Max. sign. wave height,m</td>
+                                <td id="wave_maxh" style="color:black; font-weight: bold;"></td>
+                            </tr>
+                            <tr>
+                                <td>Max. height (1%), m 
+                                    <hr style="margin-top: 3px;" class="uk-divider-small">
+                                </td>
+                                <td id="wave_maxh3p" style="color:black; font-weight: bold;"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <table class="uk-table uk-table-responsive">
+                        <caption style="padding-right: 5px;"></caption>
+                        <caption style="padding-right: 5px;">Wind parameters</caption>
+                        <tfoot>
+                            <tr>
+                                <td id="coords-display"><br>
+
+                                </td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                            <tr>
+                                <td>Mean speed on 50 m, m/s</td>
+                                <td id="wind_spd50" style="color:black; font-weight: bold;"></td>
+                            </tr>
+                            <tr>
+                                <td>Mean speed on 100 m, m/s</td>
+                                <td id="wind_spd100" style="color:black; font-weight: bold;"></td>
+                            </tr>
+                            <tr>
+                                <td>Mean power density on 50 m, W/m2</td>
+                                <td id="wind_grp50" style="color:black; font-weight: bold;"></td>
+                            </tr>
+                            <tr>
+                                <td>Mean power density on 100 m, W/m2</td>
+                                <td id="wind_grp100" style="color:black; font-weight: bold;"></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <hr style="margin-top: 3px;" class="uk-divider-small">
+                                </td>
+                                <td id="wave_lenght" style="color:black; font-weight: bold;"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </article>
+            </section>
+            <section class="table_place">
+
+                <div class="datetime_manager">
+                    <form action="#" id="dataform">
+                        <div class="dates">
+                            <label for="start">Start date:</label>
+                            <input id="start" type="text" name="startdate" class="uk-input uk-form-width-small"
+                                autocomplete="off" placeholder="01.01.1980" value="01.01.2016" min="1980-01-01"
+                                max="2016-12-31" minlength="10" maxlength="10" required>
+                            time:
+                            <select name="starttime" class="uk-select uk-form-width-small">
+                                <option value="0">00:00</option>
+                                <option value="3">03:00</option>
+                                <option value="6">06:00</option>
+                                <option value="9">09:00</option>
+                                <option value="12">12:00</option>
+                                <option value="15">15:00</option>
+                                <option value="18">18:00</option>
+                                <option value="21">21:00</option>
+                            </select>
+                        </div>
+
+                        <div class="dates">
+                            <label for="finish">End date: </label>
+                            <input id="finish" name="enddate" style="margin-left:6px;"
+                                class="uk-input uk-form-width-small" placeholder="31.12.2016" value="31.12.2016"
+                                minlength="10" maxlength="10" autocomplete="off" required>
+                            time:
+                            <select name="endtime" class="uk-select uk-form-width-small">
+                                <option value="0">00:00</option>
+                                <option value="3">03:00</option>
+                                <option value="6">06:00</option>
+                                <option value="9">09:00</option>
+                                <option value="12">12:00</option>
+                                <option value="15">15:00</option>
+                                <option value="18">18:00</option>
+                                <option value="21">21:00</option>
+                            </select>
+                        </div>
+                    </form>
+                    <div class="dates" id="culchide">
+                        <button id="calcbut" class="uk-button uk-button-primary uk-button-small">Calculate</button>
+                    </div>
+                </div>
+
+                <div class="dates" id="timeshow">
+                    <button style="color:#0f6ecd;" id="timeshowbut"
+                        class="uk-button uk-button-default uk-button-small uk-width-1-1">2016-11-09 06:00:00 -
+                        2016-07-16 18:00:00</button>
+                </div>
+
+                <div class="uk-divider-icon"></div>
+                <div class="responce_table">
+                    <table class="uk-table uk-table-divider">
+                        <thead>
+                            <tr>
+                                <th class="tablehead">Parameter</th>
+                                <th class="tablehead">Sign.wave height</th>
+                                <th class="tablehead">Period</th>
+                                <th class="tablehead">Energy</th>
+                                <th class="tablehead">Length</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="rowhead">mean</td>
+                                <td id="avg_hsig"></td>
+                                <td id="avg_period"></td>
+                                <td id="avg_energy"></td>
+                                <td id="avg_wlen"></td>
+                            </tr>
+                            <tr>
+                                <td class="rowhead">min</td>
+                                <td id="min_hsig"></td>
+                                <td id="min_period"></td>
+                                <td id="min_energy"></td>
+                                <td id="min_wlen"></td>
+                            </tr>
+                            <tr>
+                                <td class="rowhead">max</td>
+                                <td id="max_hsig"></td>
+                                <td id="max_period"></td>
+                                <td id="max_energy"></td>
+                                <td id="max_wlen"></td>
+                            </tr>
+                            <tr>
+                                <td class="rowhead">median</td>
+                                <td id="med_hsig"></td>
+                                <td id="med_period"></td>
+                                <td id="med_energy"></td>
+                                <td id="med_wlen"></td>
+                            </tr>
+                            <tr>
+                                <td class="rowhead">STD</td>
+                                <td id="std_hsig"></td>
+                                <td id="std_period"></td>
+                                <td id="std_energy"></td>
+                                <td id="std_wlen"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+
+                <div class="supply_table">
+                    <div class="dates supply_title">Probability</div>
+                    <table class="uk-table uk-table-divider">
+                        <tbody>
+                            <tr>
+                                <td class="rowhead">Wave<br>period</td>
+                                <td id="gr_less1">
+                                    <select id="greater_less1" name="greater_less1"
+                                        class="uk-select uk-form-width-xsmall">
+                                        <option value="greater">></option>
+                                        <option value="less"><</option>
+                                    </select>
+                                </td>
+                                <td id="period_input_td">
+                                    <input id="period_input" name="period_input" style="margin-left:6px;"
+                                        class="uk-input uk-form-width-small" placeholder="0.25" autocomplete="off">
+                                    <b>:</b>
+                                </td>
+                                <td id="periodsup_value"></td>
+                            </tr>
+                            <tr>
+                                <td class="rowhead">Wave<br>energy</td>
+                                <td id="gr_less2">
+                                    <select id="greater_less2" name="greater_less2"
+                                        class="uk-select uk-form-width-xsmall">
+                                        <option value="greater">></option>
+                                        <option value="less"><</option>
+                                    </select>
+                                </td>
+                                <td id="energy_input_td">
+                                    <input id="energy_input" name="energy_input" style="margin-left:6px;"
+                                        class="uk-input uk-form-width-small" placeholder="0.25" autocomplete="off">
+                                    <b>:</b>
+                                </td>
+                                <td id="energysup_value"></td>
+                            </tr>
+                            <tr>
+                                <td class="rowhead">Wave<br>length</td>
+                                <td id="gr_less3">
+                                    <select id="greater_less3" name="greater_less3"
+                                        class="uk-select uk-form-width-xsmall">
+                                        <option value="greater">></option>
+                                        <option value="less"><</option>
+                                    </select>
+                                </td>
+                                <td id="len_input_td">
+                                    <input id="len_input" name="len_input" style="margin-left:6px;"
+                                        class="uk-input uk-form-width-small" placeholder="0.25" autocomplete="off">
+                                    <b>:</b>
+                                </td>
+                                <td id="lensup_value"></td>
+                            </tr>
+                            <tr>
+                                <td class="rowhead">Waves<br>of significant<br>height</td>
+                                <td id="gr_less4">
+                                    <select id="greater_less4" name="greater_less4"
+                                        class="uk-select uk-form-width-xsmall">
+                                        <option value="greater">></option>
+                                        <option value="less"><</option>
+                                    </select>
+                                </td>
+                                <td id="hsig_input_td">
+                                    <input id="hsig_input" name="hsig_input" style="margin-left:6px;"
+                                        class="uk-input uk-form-width-small" placeholder="0.25" autocomplete="off">
+                                    <b>:</b>
+                                </td>
+                                <td id="hsigsup_value"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+    </div>
+
+
+    <script src="./js/index.js"></script>
+
+</body>
+</html>
