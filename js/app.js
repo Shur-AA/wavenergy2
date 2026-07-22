@@ -1,7 +1,8 @@
+require('dotenv').config({ path: '../.env'});
 const http = require('http');
 const { Client } = require('pg');
 const querystring = require('querystring');
-require('dotenv').config();
+
 
 function reformatDatetime(date, time) {
   if (time.length == 1) { time = '0' + time; };
@@ -111,4 +112,5 @@ const server = http.createServer(function (req, res) {
 
 server.listen(process.env.BACKEND_PORT, process.env.BACKEND_HOST, () => {
   console.log(`Server running at http://${process.env.BACKEND_HOST}:${process.env.BACKEND_PORT}/`);
+
 });

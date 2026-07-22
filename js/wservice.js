@@ -5,7 +5,7 @@ require('dotenv').config();
 var svc = new Service({
   name:'Wavenergy_service',
   description: 'The nodejs wevenergy web server',
-  script: process.env.BACKEND_ABSOLUTE_PATH,
+  script: 'D:/wavenergy/wavenergy2/js/app1.js',
   nodeOptions: [
     '--harmony',
     '--max_old_space_size=4096'

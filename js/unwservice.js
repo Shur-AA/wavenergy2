@@ -4,7 +4,7 @@ require('dotenv').config();
 // Create a new service object
 var svc = new Service({
   name:'Wavenergy_service',
-  script: process.env.BACKEND_ABSOLUTE_PATH
+  script: 'D:/wavenergy/wavenergy2/js/app.js'
 });
 
 // Listen for the "uninstall" event so we know when it's done.
