@@ -1,4 +1,5 @@
 var Service = require('node-windows').Service;
+require('dotenv').config();
 
 // Create a new service object
 var svc = new Service({

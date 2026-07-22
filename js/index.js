@@ -34,6 +34,8 @@ var render_hist = require('./components/gistrender');
 var FooPicker = require('./appearence/foopicker.js');
 var baseWFSWMS = require('./components/base_layers_wfs');
 
+const dotenv = require('dotenv');
+
 
 var epsg = 4326;
 

@@ -109,6 +109,6 @@ const server = http.createServer(function (req, res) {
   })
 })
 
-server.listen(process.env.PORT, process.env.HOST, () => {
-  console.log(`Server running at http://${process.env.HOST}:${process.env.PORT}/`);
+server.listen(process.env.BACKEND_PORT, process.env.BACKEND_HOST, () => {
+  console.log(`Server running at http://${process.env.BACKEND_HOST}:${process.env.BACKEND_PORT}/`);
 });
