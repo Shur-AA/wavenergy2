@@ -64,3 +64,30 @@ img {
     margin: 0 auto;
     justify-content: space-between;
   }
+
+/* Отключаем перехват кликов на фоновом контейнере */
+.graphics {
+    pointer-events: none;
+}
+
+/* Включаем кликабельность для всех видимых элементов внутри */
+.rose-graphic,
+.freq-graphic,
+.control_butt,
+.control_butt *,
+.tb-row,
+.tb-toggle-button-cover,
+.tb-button-cover,
+.tb-button,
+.tb-checkbox,
+.fa-window-minimize,
+.graph-info,
+.rose-title,
+.freq-title {
+    pointer-events: auto !important;
+}
+
+/* Также для таблицы, если она находится отдельно */
+.ww-table {
+    pointer-events: auto;
+}
