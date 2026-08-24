@@ -3,7 +3,6 @@ import $ from 'jquery';
 import Feature from 'ol/Feature';
 import Map from 'ol/Map';
 import View from 'ol/View';
-import GeoJSON from 'ol/format/GeoJSON';
 import Point from 'ol/geom/Point';
 import { Vector as VectorLayer } from 'ol/layer.js';
 import 'ol/ol.css';
@@ -113,32 +112,32 @@ map.on('click', function (evt) {
 
 
 map.on('singleclick', function (evt) {
-  var viewResolution = /** @type {number} */ (map.getView().getResolution());
-  var url = layers.wmsSource.getFeatureInfoUrl(
-    evt.coordinate, viewResolution, 'EPSG:4326',
-    { 'INFO_FORMAT': 'application/json' });
-  if (url) {
-    let parser = new GeoJSON();
-    $.ajax({
-      url: url,
-      type: "POST"
-    }).then(function (response) {
-      let result = parser.readFeatures(response);
+  const [lon, lat] = evt.coordinate;
+  $.ajax({
+    url: process.env.BACKEND_URL,
+    type: "POST",
+    data: JSON.stringify({
+      "lon": lon,
+      "lat": lat,
+      "type": "voronoi"
+    }),
+    success: function (result) {
+      console.log(result)
       if (result.length) {
         var table = document.getElementsByClassName("ww-table");
         document.getElementById("sea_name").innerHTML =
-          result[0].get('sea_en') + '<hr class="uk-divider-small">';
+          result[0]['sea_en'] + '<hr class="uk-divider-small">';
         document.getElementById("wave_height").innerHTML =
-          result[0].get('hsr').toFixed(2);
+          parseFloat(result[0]['hsr']).toFixed(2);
         document.getElementById("wave_lenght").innerHTML =
-          result[0].get('lsr').toFixed(2);
+          parseFloat(result[0]['lsr']).toFixed(2);
         document.getElementById("wave_period").innerHTML =
-          result[0].get('psr').toFixed(2);
+          parseFloat(result[0]['psr']).toFixed(2);
         document.getElementById("wave_energy").innerHTML =
-          result[0].get('esr').toFixed(2);
+          parseFloat(result[0]['esr']).toFixed(2);
         document.getElementById("wave_maxh").innerHTML =
-          result[0].get('hs').toFixed(2);
-        var h3p_result = result[0].get('h3p').toFixed(2);
+          parseFloat(result[0]['hs']).toFixed(2);
+        var h3p_result = parseFloat(result[0]['h3p']).toFixed(2);
         if (h3p_result == 0) {
           document.getElementById("wave_maxh3p").innerHTML = ''
         } else {
@@ -146,16 +145,14 @@ map.on('singleclick', function (evt) {
             h3p_result;
         };
         document.getElementById("wind_spd50").innerHTML =
-          result[0].get('spd_50').toFixed(2);
+          parseFloat(result[0]['spd_50']).toFixed(2);
         document.getElementById("wind_spd100").innerHTML =
-          result[0].get('spd_100').toFixed(2);
+          parseFloat(result[0]['spd_100']).toFixed(2);
         document.getElementById("wind_grp50").innerHTML =
-          result[0].get('grp_50').toFixed(2);
+          parseFloat(result[0]['grp_50']).toFixed(2);
         document.getElementById("wind_grp100").innerHTML =
-          result[0].get('grp_100').toFixed(2);
+          parseFloat(result[0]['grp_100']).toFixed(2);
         table[0].style.visibility = 'visible';
-        point_index = result[0].get('index');
-        // console.log(point_index);
       } else {
         document.getElementById("sea_name").innerHTML = '';
         document.getElementById("wave_height").innerHTML = '';
@@ -165,8 +162,8 @@ map.on('singleclick', function (evt) {
         document.getElementById("wave_maxh").innerHTML = '';
         document.getElementById("wave_maxh3p").innerHTML = '';
       }
-    })
-  }
+    }
+  })
 });
 
 // ********************SUPPLY TABLE CHANGE******************
