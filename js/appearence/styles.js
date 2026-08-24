@@ -1,6 +1,5 @@
-import { Fill, Stroke, Icon, Style, Text, Circle } from 'ol/style';
+import { Circle, Fill, Icon, Stroke, Style, Text } from 'ol/style';
 var fun = require('../components/functions')
-var colorbrewer = require('colorbrewer');
 
 var selectedStyle = new Style({
   stroke: new Stroke({
@@ -30,46 +29,29 @@ function cont_style(feature, resolution) {
   });
 }
 
-function cont_label_style(feature, resolution) {
+function cont_label_style(feature) {
   var idx = feature.get('index');
-  var z = fun.round(feature.get('z'),1);
-  var len = feature.get('Shape_Length');
- 
-  var fontstyle = (idx == 1) ? 'bold 14px' : '13px'
- 
-  // if (len > 5e-1 * resolution) {
-    return new Style({
-      text: new Text({
-        text : z.toString(),
-        font: `${fontstyle} "Open Sans", "Arial", "sans-serif"`,
-        placement: 'line',
-        fill: new Fill({
-          color: 'black'
-        }),
-        stroke: new Stroke({
-          color: 'white',
-          width: 1
-        })
-      })
-    });
-  // }
- }
-// }
+  var z = fun.round(feature.get('z'), 1);
 
-function country_style() {
+  var fontstyle = (idx == 1) ? 'bold 14px' : '13px'
+
   return new Style({
-    // stroke: new Stroke({
-    //   color: '#A6ACAF',
-    //   width: 0.5
-    // }),
-    fill: new Fill({
-      color: 'white'
+    text: new Text({
+      text: z.toString(),
+      font: `${fontstyle} "Open Sans", "Arial", "sans-serif"`,
+      placement: 'line',
+      fill: new Fill({
+        color: 'black'
+      }),
+      stroke: new Stroke({
+        color: 'white',
+        width: 1
+      })
     })
-  })
+  });
 }
 
-
-function russia_style() {
+function country_style() {
   return new Style({
     fill: new Fill({
       color: 'white'
@@ -158,7 +140,6 @@ module.exports = {
   cont_style,
   cont_label_style,
   country_style,
-  russia_style,
   coastline_style,
   river_style,
   lake_style,

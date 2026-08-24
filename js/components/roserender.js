@@ -52,7 +52,7 @@ function wind_rose(divId, dt) {
             b: 15,
             t: 40,
             pad: 5
-          },
+        },
         polar: {
             radialaxis: {
                 // range: [0, 3.8],
@@ -72,33 +72,33 @@ function wind_rose(divId, dt) {
             showlegend: false
         }
     }
-    Plotly.newPlot(divId, data, layout, {responsive: true})
+    Plotly.newPlot(divId, data, layout, { responsive: true })
 }
 
-function findClosest(clat, clon){
-    let rfi = parseFloat((clat%1).toFixed(1));
-    let rlb = parseFloat((clon%1).toFixed(1));
+function findClosest(clat, clon) {
+    let rfi = parseFloat((clat % 1).toFixed(1));
+    let rlb = parseFloat((clon % 1).toFixed(1));
     let five = [0.3, 0.4, 0.5, 0.6, 0.7]
-    let flor = [0.1, 0.2] 
-    if (five.indexOf(rfi) >= 0){
-        if (rfi == 0.3 || rfi == 0.4){
-            var llat = parseFloat(clat.toFixed(0)) + 0.5;    
+    let flor = [0.1, 0.2]
+    if (five.indexOf(rfi) >= 0) {
+        if (rfi == 0.3 || rfi == 0.4) {
+            var llat = parseFloat(clat.toFixed(0)) + 0.5;
         } else {
-            var llat = parseFloat(clat.toFixed(0)) - 0.5; 
+            var llat = parseFloat(clat.toFixed(0)) - 0.5;
         }
-    } else if (flor.indexOf(rfi) >= 0){
+    } else if (flor.indexOf(rfi) >= 0) {
         var llat = parseFloat(clat.toFixed(0)) + 0.0;
     } else {
         var llat = parseFloat(clat.toFixed(0));
     }
 
-    if (five.indexOf(rlb) >= 0){
-        if (rlb == 0.3 || rlb == 0.4){
-            var llon = parseFloat(clon.toFixed(0)) + 0.5;    
+    if (five.indexOf(rlb) >= 0) {
+        if (rlb == 0.3 || rlb == 0.4) {
+            var llon = parseFloat(clon.toFixed(0)) + 0.5;
         } else {
-            var llon = parseFloat(clon.toFixed(0)) - 0.5; 
+            var llon = parseFloat(clon.toFixed(0)) - 0.5;
         }
-    } else if (flor.indexOf(rlb) >= 0){
+    } else if (flor.indexOf(rlb) >= 0) {
         var llon = parseFloat(clon.toFixed(0)) + 0.0;
     } else {
         var llon = parseFloat(clon.toFixed(0));
@@ -112,15 +112,17 @@ function render_rose(clicked_lat, clicked_lon) {
     var div = document.getElementsByClassName("rose-graphic");
     div[0].style.visibility = 'visible';
     crd = findClosest(clicked_lat, clicked_lon);
-    var rosejson = {"lat": crd[0],
-                   "lon": crd[1],
-                   "type": "rose"};
+    var rosejson = {
+        "lat": crd[0],
+        "lon": crd[1],
+        "type": "rose"
+    };
     $.ajax({
         url: process.env.BACKEND_URL,
         type: "POST",
-        data : JSON.stringify(rosejson),
-        success : function(data) {
-        wind_rose(rose_div, (data[0].vls).split(','));
+        data: JSON.stringify(rosejson),
+        success: function (data) {
+            wind_rose(rose_div, (data[0].vls).split(','));
         }
     })
 }
