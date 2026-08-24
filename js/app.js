@@ -51,6 +51,15 @@ const freqdata = `
             AND "height" = $3
     `
 
+const voronoi = `
+        SELECT * 
+        FROM myvoronoy
+        WHERE ST_Contains(
+            myvoronoy.geom, 
+            ST_Point($1, $2, 4326)
+        )
+    `
+
 // ============================================
 // 5. Обработка запросов (оптимизировано)
 // ============================================
@@ -107,6 +116,11 @@ const server = http.createServer(async (req, res) => {
                         params = [data.lat, data.lon, data.height];
                         break;
 
+                    case 'voronoi':
+                        query = voronoi;
+                        params = [data.lon, data.lat];
+                        break;
+
                     default:
                         query = 'SELECT 1 as test';
                         params = [];
@@ -116,7 +130,6 @@ const server = http.createServer(async (req, res) => {
                 console.log('📊 Параметры:', params);
 
                 // Выполнение запроса через Pool
-                console.log()
                 const result = await pool.query(query, params);
 
 
